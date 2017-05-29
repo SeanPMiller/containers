@@ -31,6 +31,18 @@ public class TestSequenceFactory
     }
 
     @Test
+    public void testIteration()
+    {
+        seq = seq.pushBack(1).pushBack(2).pushBack(3).pushBack(4);
+
+        int expected = 1;
+        for (final Integer i : seq)
+        {
+            assertEquals(i, Integer.valueOf(expected++));
+        }
+    }
+
+    @Test
     public void testHead()
     {
         seq = seq.pushBack(1).pushBack(2);

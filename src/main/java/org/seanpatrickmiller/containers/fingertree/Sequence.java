@@ -1,5 +1,6 @@
 package org.seanpatrickmiller.containers.fingertree;
 
+import java.util.Iterator;
 import org.seanpatrickmiller.containers.fingertree.Empty;
 import org.seanpatrickmiller.containers.fingertree.FingerTree;
 import org.seanpatrickmiller.containers.fingertree.Measured;
@@ -9,7 +10,7 @@ import org.seanpatrickmiller.containers.util.Func;
 import org.seanpatrickmiller.containers.util.Identity;
 import org.seanpatrickmiller.containers.util.Monoids;
 
-public final class Sequence<A>
+public final class Sequence<A> implements java.lang.Iterable<A>
 {
     // This sequence's actual representation.
     private final FingerTree<java.lang.Integer, A> tree;
@@ -80,6 +81,11 @@ public final class Sequence<A>
     public Sequence<A> initial()
     {
         return new Sequence<A>(this.tree.rtail(), this);
+    }
+
+    public Iterator<A> iterator()
+    {
+        return new SequenceIterator<A>(this.tree);
     }
 
     public Sequence<A> pushFront(final A a)
