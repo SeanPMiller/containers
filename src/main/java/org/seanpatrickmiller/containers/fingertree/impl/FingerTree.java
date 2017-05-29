@@ -1,5 +1,6 @@
 package org.seanpatrickmiller.containers.fingertree.impl;
 
+import java.util.Iterator;
 import org.seanpatrickmiller.containers.util.Func;
 
 /**
@@ -56,7 +57,7 @@ import org.seanpatrickmiller.containers.util.Func;
  * @param <V> annotation type
  * @param <A> element type
  */
-public abstract class FingerTree<V, A>
+public abstract class FingerTree<V, A> implements java.lang.Iterable<A>
 {
     /**
      * The instance of Measured inherited by deriving classes.
@@ -70,6 +71,12 @@ public abstract class FingerTree<V, A>
     protected FingerTree(final Measured<V, A> m)
     {
         this.m = m;
+    }
+
+    @Override
+    public Iterator<A> iterator()
+    {
+        return new FingerTreeIterator<V, A>(this);
     }
 
     /**

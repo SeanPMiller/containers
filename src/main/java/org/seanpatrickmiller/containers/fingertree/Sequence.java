@@ -2,6 +2,7 @@ package org.seanpatrickmiller.containers.fingertree;
 
 import com.google.common.base.Objects;
 import java.util.Iterator;
+import java.util.Spliterator;
 import org.seanpatrickmiller.containers.fingertree.impl.Empty;
 import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
 import org.seanpatrickmiller.containers.fingertree.impl.Measured;
@@ -84,9 +85,16 @@ public final class Sequence<A> implements java.lang.Iterable<A>
         return new Sequence<A>(this.tree.rtail(), this);
     }
 
+    @Override
     public Iterator<A> iterator()
     {
-        return new SequenceIterator<A>(this.tree);
+        return this.tree.iterator();
+    }
+
+    @Override
+    public Spliterator<A> spliterator()
+    {
+        return new SequenceSpliterator<A>(this.tree);
     }
 
     public Sequence<A> pushFront(final A a)
