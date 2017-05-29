@@ -304,6 +304,31 @@ public class TestSequenceFactory
     @Test
     public void testEquals()
     {
-        // TODO
+        new EqualsTester().
+            // empty
+            addEqualityGroup(
+                factory.makeEmpty(),
+                factory.makeEmpty()).
+
+            // 1 element
+            addEqualityGroup(
+                factory.makeEmpty().pushBack(7),
+                factory.makeSingleton(7),
+                factory.make(7),
+                factory.make(7, 11).initial(),
+                factory.make(11, 7).tail()).
+            addEqualityGroup(
+                factory.makeSingleton(null),
+                factory.makeSingleton(null)).
+
+            // 2 elements
+            addEqualityGroup(
+                factory.makeEmpty().pushBack(7).pushBack(11),
+                factory.makeSingleton(7).pushBack(11),
+                factory.make(7, 11),
+                factory.make(7, 11, 42).initial(),
+                factory.make(42, 7, 11).tail()).
+
+            testEquals();
     }
 }

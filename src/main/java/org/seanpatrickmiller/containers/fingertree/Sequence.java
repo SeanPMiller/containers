@@ -1,5 +1,6 @@
 package org.seanpatrickmiller.containers.fingertree;
 
+import com.google.common.base.Objects;
 import java.util.Iterator;
 import org.seanpatrickmiller.containers.fingertree.impl.Empty;
 import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
@@ -185,7 +186,7 @@ public final class Sequence<A> implements java.lang.Iterable<A>
         View<java.lang.Integer, A> j = other.tree.viewLeft();
         while (i != null)
         {
-            if (!i.head.equals(j.head))
+            if (!Objects.equal(i.head, j.head))
             {
                 return false;
             }
@@ -197,5 +198,17 @@ public final class Sequence<A> implements java.lang.Iterable<A>
         return true;
     }
 
-    // TODO: hashCode(), toString()
+    @Override
+    public int hashCode()
+    {
+        int result = 7;
+        for (final A a : this.tree)
+        {
+            final int c = Objects.hashCode(a);
+            result = 37 * result + c;
+        }
+        return result;
+    }
+
+    // TODO: toString()
 }
