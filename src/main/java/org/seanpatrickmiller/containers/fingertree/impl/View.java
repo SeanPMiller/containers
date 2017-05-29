@@ -1,4 +1,4 @@
-package org.seanpatrickmiller.containers.fingertree;
+package org.seanpatrickmiller.containers.fingertree.impl;
 
 /**
  * Wrapper for the results of the view operations.

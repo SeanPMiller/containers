@@ -1,4 +1,4 @@
-package org.seanpatrickmiller.containers.fingertree;
+package org.seanpatrickmiller.containers.fingertree.impl;
 
 import com.google.common.base.Objects;
 import org.seanpatrickmiller.containers.util.Func;

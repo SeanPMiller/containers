@@ -1,7 +1,7 @@
 package org.seanpatrickmiller.containers.fingertree;
 
 import com.google.common.testing.EqualsTester;
-import org.seanpatrickmiller.containers.fingertree.FingerTree;
+import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
 import org.seanpatrickmiller.containers.util.Identity;
 import org.seanpatrickmiller.containers.util.Functions;
 import org.testng.annotations.BeforeClass;

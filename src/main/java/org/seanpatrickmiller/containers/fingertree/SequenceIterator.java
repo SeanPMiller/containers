@@ -1,6 +1,8 @@
 package org.seanpatrickmiller.containers.fingertree;
 
 import java.util.Iterator;
+import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
+import org.seanpatrickmiller.containers.fingertree.impl.View;
 
 class SequenceIterator<A> implements Iterator<A>
 {

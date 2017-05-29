@@ -1,11 +1,11 @@
 package org.seanpatrickmiller.containers.fingertree;
 
 import java.util.Iterator;
-import org.seanpatrickmiller.containers.fingertree.Empty;
-import org.seanpatrickmiller.containers.fingertree.FingerTree;
-import org.seanpatrickmiller.containers.fingertree.Measured;
-import org.seanpatrickmiller.containers.fingertree.Single;
-import org.seanpatrickmiller.containers.fingertree.View;
+import org.seanpatrickmiller.containers.fingertree.impl.Empty;
+import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
+import org.seanpatrickmiller.containers.fingertree.impl.Measured;
+import org.seanpatrickmiller.containers.fingertree.impl.Single;
+import org.seanpatrickmiller.containers.fingertree.impl.View;
 import org.seanpatrickmiller.containers.util.Func;
 import org.seanpatrickmiller.containers.util.Identity;
 import org.seanpatrickmiller.containers.util.Monoids;
