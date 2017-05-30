@@ -1,16 +1,18 @@
-package org.seanpatrickmiller.containers.fingertree;
+package org.seanpatrickmiller.containers.fingertree.impl;
 
 import org.seanpatrickmiller.containers.util.Func;
 
-final class One<V, A> extends Digit<V, A>
+final class Two<V, A> extends Digit<V, A>
 {
     final A a;
+    final A b;
 
-    One(final Measured<V, A> m, final A a)
+    Two(final Measured<V, A> m, final A a, final A b)
     {
         super(m);
 
         this.a = a;
+        this.b = b;
     }
 
     @Override
@@ -21,7 +23,7 @@ final class One<V, A> extends Digit<V, A>
     {
         return new Deep<V, A>(
             m,
-            new Two<V, A>(m, x, a),
+            new Three<V, A>(m, x, a, b),
             mid,
             right);
     }
@@ -36,49 +38,65 @@ final class One<V, A> extends Digit<V, A>
             m,
             left,
             mid,
-            new Two<V, A>(m, a, x));
+            new Three<V, A>(m, a, b, x));
     }
 
     @Override
     Digit<V, A> reverse(final Func<A, A> f)
     {
-        return new One<V, A>(m, f.call(a));
+        return new Two<V, A>(m, f.call(b), f.call(a));
     }
 
     @Override
     <B> Digit<V, B> map(final Func<A, B> f, final Measured<V, B> m)
     {
-        return new One<V, B>(m, f.call(a));
+        return new Two<V, B>(m, f.call(a), f.call(b));
     }
 
     @Override
-    Digit<V, A> map(final Func<A, A> f)
+    Digit<V, A> map(final Func<A,A> f)
     {
-        return new One<V, A>(m, f.call(a));
+        return new Two<V, A>(m, f.call(a), f.call(b));
     }
 
     @Override
     <B> B foldRight(final Func<A, Func<B, B>> f, final B zero)
     {
-        return f.call(a).call(zero);
+        return f.call(a).call(f.call(b).call(zero));
     }
 
     @Override
     <B> B foldLeft(final Func<B, Func<A, B>> f, final B zero)
     {
-        return f.call(zero).call(a);
+        return f.call(f.call(zero).call(a)).call(b);
     }
 
     @Override
     Split<Digit<V, A>, A> split(final Func<V, Boolean> pred, final V measure)
     {
-        return new Split<Digit<V, A>, A>(null, a, null);
+        final V va = m.sum(measure, m.measure(a));
+        if (pred.call(va))
+        {
+            return new Split<Digit<V, A>, A>(
+                null,
+                a,
+                new One<V, A>(m, b));
+        }
+
+        return new Split<Digit<V, A>, A>(
+            new One<V, A>(m, a),
+            b,
+            null);
     }
 
     @Override
     FingerTree<V, A> toTree()
     {
-        return new Single<V, A>(m, a);
+        return new Deep<V, A>(
+            m,
+            new One<V, A>(m, a),
+            new Empty<V, Node<V, A>>(m.nodeMeasured()),
+            new One<V, A>(m, b));
     }
 
     @Override
@@ -90,26 +108,24 @@ final class One<V, A> extends Digit<V, A>
     @Override
     Digit<V, A> tail()
     {
-        throw new java.lang.UnsupportedOperationException(
-            "Digit.tail(): cannot call on instance of One");
+        return new One<V, A>(m, b);
     }
 
     @Override
     A rhead()
     {
-        return a;
+        return b;
     }
 
     @Override
     Digit<V, A> rtail()
     {
-        throw new java.lang.UnsupportedOperationException(
-            "Digit.rtail(): cannot call on instance of One");
+        return new One<V, A>(m, a);
     }
 
     @Override
     public java.lang.String toString()
     {
-        return "One(" + a + ")";
+        return "Two(" + a + "," + b + ")";
     }
 }

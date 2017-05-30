@@ -1,7 +1,13 @@
 package org.seanpatrickmiller.containers.fingertree;
 
 import com.google.common.testing.EqualsTester;
-import org.seanpatrickmiller.containers.fingertree.FingerTree;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
+import org.seanpatrickmiller.containers.fingertree.impl.FingerTree;
 import org.seanpatrickmiller.containers.util.Identity;
 import org.seanpatrickmiller.containers.util.Functions;
 import org.testng.annotations.BeforeClass;
@@ -40,6 +46,47 @@ public class TestSequenceFactory
         {
             assertEquals(i, Integer.valueOf(expected++));
         }
+    }
+
+    @Test
+    public void testSpliteratorInterface()
+    {
+        seq = factory.make(84, 17, 9, 43, 60);
+
+        final Spliterator<java.lang.Integer> iter = seq.spliterator();
+        assertEquals((long) seq.size(), iter.estimateSize());
+
+        final Spliterator<java.lang.Integer> lower = iter.trySplit();
+
+        final List<java.lang.Integer> list = new ArrayList<>();
+        final Consumer<java.lang.Integer> pusher =
+            new Consumer<java.lang.Integer>() {
+                @Override
+                public void accept(java.lang.Integer i)
+                {
+                    list.add(i);
+                }
+            };
+
+        iter.forEachRemaining(pusher);
+        assertEquals(list.size(), iter.getExactSizeIfKnown());
+        assertEquals(list, Arrays.asList(9, 43, 60));
+
+        list.clear();
+        lower.forEachRemaining(pusher);
+        assertEquals(list.size(), lower.getExactSizeIfKnown());
+        assertEquals(list, Arrays.asList(84, 17));
+    }
+
+    @Test
+    public void testSpliteration()
+    {
+        seq = factory.make(1, 2, 3, 4, 5, 6, 7, 8);
+        final int expectedSum = (seq.size() + 1) * seq.size() / 2;
+        final int actualSum = StreamSupport.stream(seq.spliterator(), false).
+            mapToInt(i -> i.intValue()).
+            sum();
+        assertEquals(actualSum, expectedSum);
     }
 
     @Test
@@ -304,6 +351,31 @@ public class TestSequenceFactory
     @Test
     public void testEquals()
     {
-        // TODO
+        new EqualsTester().
+            // empty
+            addEqualityGroup(
+                factory.makeEmpty(),
+                factory.makeEmpty()).
+
+            // 1 element
+            addEqualityGroup(
+                factory.makeEmpty().pushBack(7),
+                factory.makeSingleton(7),
+                factory.make(7),
+                factory.make(7, 11).initial(),
+                factory.make(11, 7).tail()).
+            addEqualityGroup(
+                factory.makeSingleton(null),
+                factory.makeSingleton(null)).
+
+            // 2 elements
+            addEqualityGroup(
+                factory.makeEmpty().pushBack(7).pushBack(11),
+                factory.makeSingleton(7).pushBack(11),
+                factory.make(7, 11),
+                factory.make(7, 11, 42).initial(),
+                factory.make(42, 7, 11).tail()).
+
+            testEquals();
     }
 }

@@ -1,4 +1,4 @@
-package org.seanpatrickmiller.containers.fingertree;
+package org.seanpatrickmiller.containers.fingertree.impl;
 
 import org.seanpatrickmiller.containers.util.Func;
 import org.seanpatrickmiller.containers.util.Lazy;
